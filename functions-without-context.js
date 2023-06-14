@@ -17,7 +17,22 @@ async function updateUsername(user) {
   })
 }
 
+async function getAllUsers() {
+    return new Promise(async (resolve, reject) => {
+      prisma.user
+        .findMany()
+        .then((users) => {
+          console.log(users);
+          resolve(users)
+        })
+        .catch((error) => {
+          reject({ error: 'Could not fetch users' })
+        });
+    });
+  }
+
 module.exports = {
     createUser,
-    updateUsername
+    updateUsername,
+    getAllUsers
 }

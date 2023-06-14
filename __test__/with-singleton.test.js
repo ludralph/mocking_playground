@@ -1,4 +1,4 @@
-const { createUser, updateUsername } =  require('../functions-without-context')
+const { createUser, updateUsername, getAllUsers } =  require('../functions-without-context')
 const { prismaMock } = require('../singleton')
 
 test('should create new user ', async () => {
@@ -50,4 +50,20 @@ test('should fail if user does not accept terms', async () => {
   await expect(createUser(user)).resolves.toEqual(
     new Error('User must accept terms!')
   )
+})
+
+test('should retrieve all the users from the database', async () => {
+
+  const dummyUsers = [
+    {
+      firstName: "John",
+      lastName: "Doe",
+      email: "johnDoe@gmail.com",
+      paidUser: false
+    }
+  ]
+
+  prismaMock.user.findMany.mockResolvedValue(dummyUsers)
+  await expect(getAllUsers()).resolves.toEqual(dummyUsers)
+
 })
